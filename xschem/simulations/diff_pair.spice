@@ -1,0 +1,23 @@
+** sch_path: /home/mtfir/microelectronics/projects/ihp-differential-pair/xschem/diff_pair.sch
+**.subckt diff_pair VDD OUT2 OUT1 IN1 IN2 VSS
+*.iopin VDD
+*.iopin VSS
+*.ipin IN1
+*.ipin IN2
+*.opin OUT2
+*.opin OUT1
+XM1 OUT1 IN1 net1 net1 sg13_lv_nmos w=1u l=0.13u ng=1 m=1
+XM2 OUT2 IN2 net1 net1 sg13_lv_nmos w=1u l=0.13u ng=1 m=1
+I0 net1 VSS 1m
+R1 VDD OUT1 1k m=1
+R2 VDD OUT2 1k m=1
+**** begin user architecture code
+
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerRES.lib res_typ
+
+
+**** end user architecture code
+**.ends
+.end

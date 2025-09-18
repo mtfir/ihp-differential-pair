@@ -1,0 +1,58 @@
+** sch_path: /home/mtfir/microelectronics/projects/ihp-differential-pair/xschem/diff_pair_tb.sch
+**.subckt diff_pair_tb
+Vin2 vin2 GND 0
+Vin1 vin1 GND 0
+Vcc net1 GND 1.2
+x1 net1 vout2 vout1 vin1 vin2 net2 diff_pair
+Vss net2 GND -1.2
+**** begin user architecture code
+
+
+.control
+let vin_array = vector(200)
+let vout1_array = vector(200)
+let vout2_array = vector(200)
+let index = 0
+repeat 200
+alter @Vin1[dc] = -10 + index * 0.1
+alter @Vin2[dc] = 10 - index * 0.1
+op
+let vin_array[index] = v(vin1) - v(vin2)
+let vout1_array[index] = v(vout1)
+let vout2_array[index] = v(vout2)
+let index = index + 1
+end
+plot vout1_array vout2_array vs vin_array
+.endc
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  diff_pair.sym # of pins=6
+** sym_path: /home/mtfir/microelectronics/projects/ihp-differential-pair/xschem/diff_pair.sym
+** sch_path: /home/mtfir/microelectronics/projects/ihp-differential-pair/xschem/diff_pair.sch
+.subckt diff_pair VDD OUT2 OUT1 IN1 IN2 VSS
+*.iopin VDD
+*.iopin VSS
+*.ipin IN1
+*.ipin IN2
+*.opin OUT2
+*.opin OUT1
+XM1 OUT1 IN1 net1 net1 sg13_lv_nmos w=1u l=0.13u ng=1 m=1
+XM2 OUT2 IN2 net1 net1 sg13_lv_nmos w=1u l=0.13u ng=1 m=1
+I0 net1 VSS 1m
+R1 VDD OUT1 1k m=1
+R2 VDD OUT2 1k m=1
+**** begin user architecture code
+
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerRES.lib res_typ
+
+
+**** end user architecture code
+.ends
+
+.GLOBAL GND
+.end
